@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع التحميل والوسائط</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- رأس الصفحة -->
+    <header>
+        <div class="container">
+            <h1>مكتبة الوسائط</h1>
+            <p>أفضل مكان لمشاهدة وتحميل الصور والفيديوهات مجاناً</p>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="ابحث عن صورة أو فيديو...">
+            </div>
+        </div>
+    </header>
+
+    <!-- محتوى الموقع (المنشورات) -->
+    <main class="container">
+        <h2>أحدث المحتويات</h2>
+        <div class="grid" id="mediaGrid">
+            
+            <!-- عنصر فيديو 1 -->
+            <div class="card" data-title="فيديو طبيعة ساحرة">
+                <div class="media-container">
+                    <video controls>
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        متصفحك لا يدعم عرض الفيديو
+                    </video>
+                </div>
+                <div class="card-content">
+                    <h3>فيديو طبيعة ساحرة</h3>
+                    <p>فيديو عالي الجودة للتحميل المباشر.</p>
+                    <a href="https://www.w3schools.com/html/mov_bbb.mp4" class="download-btn" download>تحميل الفيديو</a>
+                </div>
+            </div>
+
+            <!-- عنصر صورة 1 -->
+            <div class="card" data-title="صورة منظر طبيعي">
+                <div class="media-container">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="منظر طبيعي">
+                </div>
+                <div class="card-content">
+                    <h3>صورة منظر طبيعي</h3>
+                    <p>صورة فوتوغرافية دقيقة ومجانية.</p>
+                    <a href="https://images.unsplash.com/photo-1506744038136-46273834b3fb" class="download-btn" target="_blank" download>تحميل الصورة</a>
+                </div>
+            </div>
+
+            <!-- عنصر فيديو 2 -->
+            <div class="card" data-title="فيديو أمواج البحر">
+                <div class="media-container">
+                    <video controls>
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        متصفحك لا يدعم عرض الفيديو
+                    </video>
+                </div>
+                <div class="card-content">
+                    <h3>فيديو أمواج البحر</h3>
+                    <p>مقطع مرئي هادئ ومناسب للتصميم.</p>
+                    <a href="https://www.w3schools.com/html/mov_bbb.mp4" class="download-btn" download>تحميل الفيديو</a>
+                </div>
+            </div>
+
+            <!-- عنصر صورة 2 -->
+            <div class="card" data-title="صورة غروب الشمس">
+                <div class="media-container">
+                    <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05" alt="غروب الشمس">
+                </div>
+                <div class="card-content">
+                    <h3>صورة غروب الشمس</h3>
+                    <p>لقطة احترافية للغروب بجودة عالية.</p>
+                    <a href="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05" class="download-btn" target="_blank" download>تحميل الصورة</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer>
+        <p>جميع الحقوق محفوظة © 2026 - موقع الوسائط المجاني</p>
+    </footer>
+
+    <!-- سكربت بسيط للبحث -->
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.card');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title').toLowerCase();
+                if(title.includes(term)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
