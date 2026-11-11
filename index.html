@@ -3,95 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Video Downloader</title>
-
+    <title>منصة التنزيل الشاملة - محمل تيك توك</title>
+    <!-- FontAwesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts الخط العربي -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
+    <div class="glow-bg"></div>
+
     <div class="container">
+        <!-- الهيدر -->
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-cloud-arrow-down neon-icon"></i>
+                <h1>منصة التنزيل <span>الشاملة</span></h1>
+            </div>
+            <p class="subtitle">قم بتنزيل فيديوهات تيك توك بدون علامة مائية وبجودة عالية مجاناً</p>
+        </header>
 
-        <div class="logo">
-            <span>⬇</span>
-            <h1>Video Downloader</h1>
-        </div>
-
-        <p class="subtitle">
-            حمّل الفيديو من الرابط بسهولة
-        </p>
-
-        <div class="download-box">
-
-            <div class="input-area">
-
-                <input
-                    type="text"
-                    id="urlInput"
-                    placeholder="الصق رابط الفيديو هنا..."
-                    autocomplete="off"
-                >
-
-                <button id="pasteBtn">
-                    لصق
+        <!-- صندوق الإدخال -->
+        <main>
+            <div class="input-card">
+                <div class="input-group">
+                    <i class="fa-solid fa-link input-icon"></i>
+                    <input type="text" id="videoUrl" placeholder="ألصق رابط فيديو تيك توك هنا...">
+                    <button id="pasteBtn" class="action-btn paste-btn" title="لصق من الحافظة">
+                        <i class="fa-solid fa-paste"></i> لصق
+                    </button>
+                    <button id="clearBtn" class="action-btn clear-btn" title="مسح الحقل" style="display: none;">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <button id="downloadBtn" class="submit-btn">
+                    <i class="fa-solid fa-download"></i> استخراج وتحميل
                 </button>
-
             </div>
 
-            <button id="downloadBtn" class="download-btn">
-                تحميل الفيديو
-            </button>
+            <!-- مؤشر التحميل -->
+            <div id="loader" class="loader-container" style="display: none;">
+                <div class="spinner"></div>
+                <p>جاري جلب بيانات الفيديو، يرجى الانتظار...</p>
+            </div>
 
-        </div>
+            <!-- قسم عرض النتيجة -->
+            <div id="resultContainer" class="result-container" style="display: none;">
+                <div class="result-card">
+                    <div class="media-preview">
+                        <img id="videoCover" src="" alt="غلاف الفيديو">
+                        <div class="play-badge"><i class="fa-solid fa-play"></i></div>
+                    </div>
+                    <div class="video-details">
+                        <h3 id="authorName">اسم المستخدم</h3>
+                        <p id="videoDesc" class="video-desc">وصف الفيديو يظهر هنا...</p>
+                        <div class="stats-row">
+                            <span><i class="fa-solid fa-heart text-danger"></i> <span id="statLikes">0</span></span>
+                            <span><i class="fa-solid fa-comment text-info"></i> <span id="statComments">0</span></span>
+                            <span><i class="fa-solid fa-share text-success"></i> <span id="statShares">0</span></span>
+                        </div>
 
-        <div id="loading" class="loading hidden">
-            <div class="loader"></div>
-            <p>جاري تجهيز الفيديو...</p>
-        </div>
-
-        <div id="resultContainer" class="result hidden">
-
-            <div class="video-info">
-
-                <div class="video-icon">
-                    ▶
+                        <!-- أزرار التحميل المباشر -->
+                        <div class="download-options">
+                            <a id="downloadHD" href="#" target="_blank" class="dl-btn hd-btn">
+                                <i class="fa-solid fa-video"></i> تحميل بدون علامة مائية (HD)
+                            </a>
+                            <a id="downloadWatermark" href="#" target="_blank" class="dl-btn water-btn">
+                                <i class="fa-solid fa-video-slash"></i> تحميل بالعلامة المائية
+                            </a>
+                            <a id="downloadAudio" href="#" target="_blank" class="dl-btn audio-btn">
+                                <i class="fa-solid fa-music"></i> تحميل الصوت (MP3)
+                            </a>
+                            <a id="downloadCover" href="#" target="_blank" class="dl-btn cover-btn">
+                                <i class="fa-solid fa-image"></i> تحميل غلاف الفيديو
+                            </a>
+                        </div>
+                    </div>
                 </div>
-
-                <div>
-                    <h2 id="mediaTitle">
-                        الفيديو جاهز
-                    </h2>
-
-                    <p>
-                        اختر تحميل الفيديو
-                    </p>
-                </div>
-
             </div>
 
-            <div id="downloadLinks" class="download-links">
+            <!-- سجل التحميلات السابقة -->
+            <div class="history-section" id="historySection" style="display: none;">
+                <h3><i class="fa-solid fa-history"></i> عمليات التنزيل الأخيرة</h3>
+                <div id="historyList" class="history-list"></div>
             </div>
+        </main>
 
-        </div>
-
-        <div id="message" class="message">
-        </div>
-
-        <div class="supported">
-            <span>روابط الفيديو المباشرة</span>
-            <span>MP4</span>
-            <span>WebM</span>
-            <span>MP3</span>
-        </div>
-
+        <!-- الفوتر -->
         <footer>
-            أداة لتحميل المحتوى الذي تملك حق تنزيله
+            <p>تم التطوير بواسطة <span>منصة التنزيل الشاملة</span> &copy; 2026</p>
         </footer>
-
     </div>
 
     <script src="script.js"></script>
-
 </body>
 </html>
