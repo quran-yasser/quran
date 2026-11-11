@@ -28,27 +28,32 @@ downloadBtn.addEventListener('click', async () => {
     downloadLinks.innerHTML = '';
 
     try {
-        const response = await fetch('https://api.cobalt.tools/api/json', {
+        // استخدام خدمة API مدعومة ومفتوحة للويب
+        const response = await fetch(`https://co.wuk.sh/api/json`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ url: url })
+            body: JSON.stringify({
+                url: url,
+                vQuality: 'max',
+                filenamePattern: 'classic'
+            })
         });
 
         const data = await response.json();
         loading.classList.add('hidden');
 
         if (data.status === 'error' || !data.url) {
-            alert('عذراً، حدث خطأ أو الرابط غير مدعوم. تأكد من صحة الرابط.');
+            alert('عذراً، الرابط غير مدعوم أو حدث خطأ أثناء المعالجة.');
             return;
         }
 
         resultContainer.classList.remove('hidden');
-        mediaTitle.textContent = data.filename || 'تم جلب الفيديو بنجاح!';
+        mediaTitle.textContent = 'تم جلب الفيديو بنجاح! اختر طريقة التحميل:';
 
-        // زرار تحميل الفيديو الأساسي
+        // زرار التحميل المباشر
         const btn = document.createElement('a');
         btn.href = data.url;
         btn.className = 'download-link-btn';
@@ -58,6 +63,6 @@ downloadBtn.addEventListener('click', async () => {
 
     } catch (error) {
         loading.classList.add('hidden');
-        alert('حدث خطأ في الاتصال بالسيرفر. جرب مرة أخرى.');
+        alert('حدث خطأ في الاتصال، تأكد من صحة الرابط وحاول مرة أخرى.');
     }
 });
