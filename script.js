@@ -15,7 +15,7 @@ pasteBtn.addEventListener('click', async () => {
     }
 });
 
-downloadBtn.addEventListener('click', () => {
+downloadBtn.addEventListener('click', async () => {
     const url = urlInput.value.trim();
     if (!url) {
         alert('أدخل الرابط أولاً!');
@@ -26,30 +26,40 @@ downloadBtn.addEventListener('click', () => {
     resultContainer.classList.add('hidden');
     downloadLinks.innerHTML = '';
 
-    setTimeout(() => {
-        loading.classList.add('hidden');
-        resultContainer.classList.remove('hidden');
-        mediaTitle.textContent = 'جاهز للتحميل!';
+    try {
+        // استخدام خدمة API موثوقة لجلب روابط الفيديوهات مباشرة
+        const response = await fetch(`https://tikwm.com/api/?url=${encodeURIComponent(url)}`);
+        const data = await response.json();
 
-        let targetUrl = '';
-        if (url.includes('tiktok.com')) {
-            targetUrl = `https://ssstik.io/en?url=${encodeURIComponent(url)}`;
-        } else if (url.includes('instagram.com')) {
-            targetUrl = `https://snapinsta.app/`;
-        } else if (url.includes('facebook.com') || url.includes('fb.watch')) {
-            targetUrl = `https://fdown.net/`;
+        loading.classList.add('hidden');
+
+        if (data.code === 0 && data.data) {
+            resultContainer.classList.remove('hidden');
+            mediaTitle.textContent = data.data.title || 'تم جلب الفيديو بنجاح!';
+
+            const videoUrl = data.data.play;
+
+            const btn = document.createElement('a');
+            btn.href = videoUrl;
+            btn.className = 'download-link-btn';
+            btn.innerHTML = '<i class="fa-solid fa-download"></i> تحميل الفيديو الآن';
+            btn.target = '_blank';
+            downloadLinks.appendChild(btn);
         } else {
-            targetUrl = `https://cobalt.tools/`;
+            // بديل مباشر لو الرابط مش تيك توك
+            resultContainer.classList.remove('hidden');
+            mediaTitle.textContent = 'رابط جاهز للتحميل المباشر:';
+            
+            const btn = document.createElement('a');
+            btn.href = url;
+            btn.className = 'download-link-btn';
+            btn.innerHTML = '<i class="fa-solid fa-download"></i> فتح ملف الفيديو';
+            btn.target = '_blank';
+            downloadLinks.appendChild(btn);
         }
 
-        const btn = document.createElement('a');
-        btn.href = targetUrl;
-        btn.className = 'download-link-btn';
-        btn.innerHTML = '<i class="fa-solid fa-download"></i> اضغط هنا لتحميل الفيديو فوراً';
-        btn.target = '_blank';
-        downloadLinks.appendChild(btn);
-
-        // فتح التنزيل في نافذة جديدة مباشرة
-        window.open(targetUrl, '_blank');
-    }, 500);
+    } catch (error) {
+        loading.classList.add('hidden');
+        alert('حدث خطأ، تأكد من صحة الرابط.');
+    }
 });
