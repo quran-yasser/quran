@@ -64,15 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
         resultContainer.style.display = 'none';
 
         try {
-            // استخدام API بديل ومستقر يدعم HTTPS بالكامل
-            const apiURL = `https://tikwm.com/api/?url=${encodeURIComponent(url)}`;
-            const response = await fetch(apiURL);
-            const data = await response.json();
+            // استخدام API مجاني وسريع جداً لجلب فيديوهات تيك توك
+            const response = await fetch(`https://tikwm.com/api/?url=${encodeURIComponent(url)}`);
+            const resData = await response.json();
 
             loader.style.display = 'none';
 
-            if (data.code === 0 && data.data) {
-                const videoData = data.data;
+            if (resData.code === 0 && resData.data) {
+                const videoData = resData.data;
                 const author = videoData.author || {};
 
                 // تعبئة معلومات الحساب
@@ -87,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 statComments.textContent = formatNumber(videoData.comment_count);
                 statShares.textContent = formatNumber(videoData.share_count);
 
-                // الروابط (تمت إضافة روابط بديلة لضمان التحميل المباشر)
+                // روابط التحميل
                 downloadHD.href = videoData.hdplay || videoData.play;
                 downloadWatermark.href = videoData.play;
                 downloadAudio.href = videoData.music;
@@ -97,47 +96,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 addToHistory(videoData.title || 'فيديو تيك توك', videoData.hdplay || videoData.play);
 
             } else {
-                alert('فشل في جلب الفيديو، تأكد من أن الرابط صحيح وعام.');
+                alert('فشل في جلب الفيديو، تأكد من صحة الرابط وأن الحساب عام.');
             }
 
         } catch (error) {
             loader.style.display = 'none';
-            // في حال حدوث حظر من المتصفح، نقوم بتوجيه الرابط عبر خدمة CorsProxy مجانية
-            try {
-                const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://tikwm.com/api/?url=${url}`)}`;
-                const proxyRes = await fetch(proxyURL);
-                const proxyData = await proxyRes.json();
-                const data = JSON.parse(proxyData.contents);
-
-                if (data.code === 0 && data.data) {
-                    const videoData = data.data;
-                    const author = videoData.author || {};
-
-                    authorAvatar.src = author.avatar || '';
-                    authorNickname.textContent = author.nickname || 'مستخدم تيك توك';
-                    authorId.textContent = `@${author.unique_id || 'user'}`;
-
-                    videoCover.src = videoData.cover;
-                    videoDesc.textContent = videoData.title || 'فيديو تيك توك';
-                    statLikes.textContent = formatNumber(videoData.digg_count);
-                    statComments.textContent = formatNumber(videoData.comment_count);
-                    statShares.textContent = formatNumber(videoData.share_count);
-
-                    downloadHD.href = videoData.hdplay || videoData.play;
-                    downloadWatermark.href = videoData.play;
-                    downloadAudio.href = videoData.music;
-                    downloadCover.href = videoData.cover;
-
-                    loader.style.display = 'none';
-                    resultContainer.style.display = 'block';
-                    return;
-                }
-            } catch (err2) {
-                console.error(err2);
-            }
-
-            loader.style.display = 'none';
-            alert('حدث خطأ أثناء الاتصال بالخادم. تأكد من أن الرابط صالح.');
+            alert('حدث خطأ أثناء جلب الفيديو، يرجى المحاولة مرة أخرى.');
+            console.error(error);
         }
     });
 
