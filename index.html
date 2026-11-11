@@ -3,42 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التنزيل الشاملة</title>
+
+    <title>Video Downloader</title>
+
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
+
     <div class="container">
-        <header>
-            <h1><i class="fa-solid fa-download"></i> منصة التنزيل الشاملة</h1>
-            <p>حمل فيديوهاتك المفضلة من تيك توك، إنستجرام، فيسبوك، ويوتيوب بدون علامة مائية!</p>
-        </header>
 
-        <div class="downloader-box">
-            <div class="input-group">
-                <i class="fa-solid fa-link"></i>
-                <input type="text" id="urlInput" placeholder="الصق رابط الفيديو هنا...">
-                <button id="pasteBtn">لصق</button>
+        <div class="logo">
+            <span>⬇</span>
+            <h1>Video Downloader</h1>
+        </div>
+
+        <p class="subtitle">
+            حمّل الفيديو من الرابط بسهولة
+        </p>
+
+        <div class="download-box">
+
+            <div class="input-area">
+
+                <input
+                    type="text"
+                    id="urlInput"
+                    placeholder="الصق رابط الفيديو هنا..."
+                    autocomplete="off"
+                >
+
+                <button id="pasteBtn">
+                    لصق
+                </button>
+
             </div>
-            <button id="downloadBtn"><i class="fa-solid fa-cloud-arrow-down"></i> تحميل الفيديو</button>
+
+            <button id="downloadBtn" class="download-btn">
+                تحميل الفيديو
+            </button>
+
         </div>
 
-        <div id="loading" class="hidden">
-            <div class="spinner"></div>
-            <p>جاري معالجة الرابط وجلب الفيديو...</p>
+        <div id="loading" class="loading hidden">
+            <div class="loader"></div>
+            <p>جاري تجهيز الفيديو...</p>
         </div>
 
-        <div id="resultContainer" class="hidden">
-            <div class="media-card">
-                <div id="mediaPreview"></div>
-                <h3 id="mediaTitle">عنوان الفيديو</h3>
-                <div id="downloadLinks" class="buttons-group">
-                    <!-- زراير التحميل هتظهر هنا تلقائياً -->
+        <div id="resultContainer" class="result hidden">
+
+            <div class="video-info">
+
+                <div class="video-icon">
+                    ▶
                 </div>
+
+                <div>
+                    <h2 id="mediaTitle">
+                        الفيديو جاهز
+                    </h2>
+
+                    <p>
+                        اختر تحميل الفيديو
+                    </p>
+                </div>
+
             </div>
+
+            <div id="downloadLinks" class="download-links">
+            </div>
+
         </div>
+
+        <div id="message" class="message">
+        </div>
+
+        <div class="supported">
+            <span>روابط الفيديو المباشرة</span>
+            <span>MP4</span>
+            <span>WebM</span>
+            <span>MP3</span>
+        </div>
+
+        <footer>
+            أداة لتحميل المحتوى الذي تملك حق تنزيله
+        </footer>
+
     </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>
