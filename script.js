@@ -6,20 +6,19 @@ const resultContainer = document.getElementById('resultContainer');
 const mediaTitle = document.getElementById('mediaTitle');
 const downloadLinks = document.getElementById('downloadLinks');
 
-// زرار اللصق التلقائي
 pasteBtn.addEventListener('click', async () => {
     try {
         const text = await navigator.clipboard.readText();
         urlInput.value = text;
     } catch (err) {
-        alert('فشل اللصق، يرجى اللصق يدوياً.');
+        alert('إلصق الرابط يدوياً');
     }
 });
 
-downloadBtn.addEventListener('click', async () => {
+downloadBtn.addEventListener('click', () => {
     const url = urlInput.value.trim();
     if (!url) {
-        alert('من فضلك ادخل رابط الفيديو أولاً!');
+        alert('أدخل الرابط أولاً!');
         return;
     }
 
@@ -27,30 +26,30 @@ downloadBtn.addEventListener('click', async () => {
     resultContainer.classList.add('hidden');
     downloadLinks.innerHTML = '';
 
-    // محاولة المعالجة السريعة والتحويل المباشر الذكي لمنصات التحميل الآمنة للويب
     setTimeout(() => {
         loading.classList.add('hidden');
         resultContainer.classList.remove('hidden');
-        mediaTitle.textContent = 'تم تجهيز الرابط بنجاح! اضغط للتحميل الفوري:';
+        mediaTitle.textContent = 'جاهز للتحميل!';
 
-        // إنشاء زر يوجه أداة التحميل المباشر لخدمة مضمونة تعمل مع كافة الروابط بدون مشاكل CORS
-        const btn = document.createElement('a');
-        
-        // تحديد الوجهة بناءً على نوع الرابط أو توجيه ذكي شامل
+        let targetUrl = '';
         if (url.includes('tiktok.com')) {
-            btn.href = `https://ssstik.io/en?url=${encodeURIComponent(url)}`;
+            targetUrl = `https://ssstik.io/en?url=${encodeURIComponent(url)}`;
         } else if (url.includes('instagram.com')) {
-            btn.href = `https://snapinsta.app/`;
+            targetUrl = `https://snapinsta.app/`;
         } else if (url.includes('facebook.com') || url.includes('fb.watch')) {
-            btn.href = `https://fdown.net/`;
+            targetUrl = `https://fdown.net/`;
         } else {
-            btn.href = `https://en.savefrom.net/1-youtube-downloader-73/`;
+            targetUrl = `https://cobalt.tools/`;
         }
 
+        const btn = document.createElement('a');
+        btn.href = targetUrl;
         btn.className = 'download-link-btn';
-        btn.innerHTML = '<i class="fa-solid fa-download"></i> افتح رابط التحميل المباشر';
+        btn.innerHTML = '<i class="fa-solid fa-download"></i> اضغط هنا لتحميل الفيديو فوراً';
         btn.target = '_blank';
         downloadLinks.appendChild(btn);
 
-    }, 1000);
+        // فتح التنزيل في نافذة جديدة مباشرة
+        window.open(targetUrl, '_blank');
+    }, 500);
 });
