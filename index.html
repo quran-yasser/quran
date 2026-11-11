@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محمل تيك توك - تنزيل بدون علامة مائية</title>
-    <!-- FontAwesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts الخط العربي -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -15,7 +13,6 @@
     <div class="glow-bg"></div>
 
     <div class="container">
-        <!-- الهيدر -->
         <header>
             <div class="logo">
                 <i class="fa-brands fa-tiktok neon-icon"></i>
@@ -24,7 +21,6 @@
             <p class="subtitle">قم بتنزيل فيديوهات تيك توك بدون علامة مائية وبجودة عالية مجاناً</p>
         </header>
 
-        <!-- صندوق الإدخال -->
         <main>
             <div class="input-card">
                 <div class="input-group">
@@ -42,36 +38,19 @@
                 </button>
             </div>
 
-            <!-- مؤشر التحميل -->
             <div id="loader" class="loader-container" style="display: none;">
                 <div class="spinner"></div>
-                <p>جاري جلب بيانات الفيديو والحساب، يرجى الانتظار...</p>
+                <p>جاري جلب بيانات الفيديو، يرجى الانتظار...</p>
             </div>
 
-            <!-- قسم عرض النتيجة ومعلومات الحساب -->
             <div id="resultContainer" class="result-container" style="display: none;">
-                
-                <!-- بطاقة معلومات صاحب الحساب -->
-                <div class="account-card">
-                    <div class="account-info">
-                        <img id="authorAvatar" src="" alt="صورة الحساب" class="author-avatar">
-                        <div>
-                            <div class="author-name-row">
-                                <h4 id="authorNickname">اسم المستخدم</h4>
-                                <i class="fa-brands fa-tiktok verified-tiktok-icon"></i>
-                            </div>
-                            <p id="authorId" class="author-id">@username</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- بطاقة تفاصيل الفيديو وأزرار التحميل -->
                 <div class="result-card">
                     <div class="media-preview">
                         <img id="videoCover" src="" alt="غلاف الفيديو">
                         <div class="play-badge"><i class="fa-solid fa-play"></i></div>
                     </div>
                     <div class="video-details">
+                        <h3 id="authorName">اسم المستخدم</h3>
                         <p id="videoDesc" class="video-desc">وصف الفيديو يظهر هنا...</p>
                         <div class="stats-row">
                             <span><i class="fa-solid fa-heart text-danger"></i> <span id="statLikes">0</span></span>
@@ -79,33 +58,30 @@
                             <span><i class="fa-solid fa-share text-success"></i> <span id="statShares">0</span></span>
                         </div>
 
-                        <!-- أزرار التحميل المباشر -->
                         <div class="download-options">
                             <a id="downloadHD" href="#" target="_blank" class="dl-btn hd-btn">
-                                <i class="fa-solid fa-video"></i> بدون علامة مائية (HD)
+                                <i class="fa-solid fa-video"></i> تحميل بدون علامة مائية (HD)
                             </a>
                             <a id="downloadWatermark" href="#" target="_blank" class="dl-btn water-btn">
-                                <i class="fa-solid fa-video-slash"></i> بالعلامة المائية
+                                <i class="fa-solid fa-video-slash"></i> تحميل بالعلامة المائية
                             </a>
                             <a id="downloadAudio" href="#" target="_blank" class="dl-btn audio-btn">
                                 <i class="fa-solid fa-music"></i> تحميل الصوت (MP3)
                             </a>
                             <a id="downloadCover" href="#" target="_blank" class="dl-btn cover-btn">
-                                <i class="fa-solid fa-image"></i> تحميل الغلاف
+                                <i class="fa-solid fa-image"></i> تحميل غلاف الفيديو
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- سجل التحميلات السابقة -->
             <div class="history-section" id="historySection" style="display: none;">
                 <h3><i class="fa-solid fa-history"></i> عمليات التنزيل الأخيرة</h3>
                 <div id="historyList" class="history-list"></div>
             </div>
         </main>
 
-        <!-- الفوتر -->
         <footer>
             <p>تم التطوير بواسطة <span>محمل تيك توك</span> &copy; 2026</p>
         </footer>
