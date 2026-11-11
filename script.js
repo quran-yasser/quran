@@ -1,65 +1,215 @@
-const urlInput = document.getElementById('urlInput');
-const pasteBtn = document.getElementById('pasteBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const loading = document.getElementById('loading');
-const resultContainer = document.getElementById('resultContainer');
-const mediaTitle = document.getElementById('mediaTitle');
-const downloadLinks = document.getElementById('downloadLinks');
+const urlInput = document.getElementById("urlInput");
+const pasteBtn = document.getElementById("pasteBtn");
+const downloadBtn = document.getElementById("downloadBtn");
 
-pasteBtn.addEventListener('click', async () => {
+const loading = document.getElementById("loading");
+const resultContainer = document.getElementById("resultContainer");
+
+const mediaTitle = document.getElementById("mediaTitle");
+const downloadLinks = document.getElementById("downloadLinks");
+
+const message = document.getElementById("message");
+
+
+// زر اللصق
+pasteBtn.addEventListener("click", async () => {
+
     try {
+
         const text = await navigator.clipboard.readText();
+
         urlInput.value = text;
-    } catch (err) {
-        alert('إلصق الرابط يدوياً');
+
+        showMessage("");
+
+    } catch (error) {
+
+        showMessage("المتصفح منع الوصول للحافظة.");
+
     }
+
 });
 
-downloadBtn.addEventListener('click', async () => {
+
+// زر التحميل
+downloadBtn.addEventListener("click", async () => {
+
     const url = urlInput.value.trim();
+
     if (!url) {
-        alert('أدخل الرابط أولاً!');
+
+        showMessage("الصق رابط الفيديو أولاً.");
+
         return;
     }
 
-    loading.classList.remove('hidden');
-    resultContainer.classList.add('hidden');
-    downloadLinks.innerHTML = '';
+    if (!isValidUrl(url)) {
+
+        showMessage("الرابط غير صحيح.");
+
+        return;
+    }
+
+    hideResult();
+
+    showMessage("");
+
+    loading.classList.remove("hidden");
+
+    downloadBtn.disabled = true;
 
     try {
-        // استخدام خدمة API موثوقة لجلب روابط الفيديوهات مباشرة
-        const response = await fetch(`https://tikwm.com/api/?url=${encodeURIComponent(url)}`);
-        const data = await response.json();
 
-        loading.classList.add('hidden');
+        /*
+         * هنا يتم إرسال الرابط إلى السيرفر الخاص بك.
+         *
+         * مثال:
+         * POST /api/download
+         *
+         * السيرفر المفترض يرجع:
+         *
+         * {
+         *   "title": "اسم الفيديو",
+         *   "downloads": [
+         *      {
+         *          "quality": "1080p",
+         *          "format": "MP4",
+         *          "url": "https://example.com/video.mp4"
+         *      }
+         *   ]
+         * }
+         */
 
-        if (data.code === 0 && data.data) {
-            resultContainer.classList.remove('hidden');
-            mediaTitle.textContent = data.data.title || 'تم جلب الفيديو بنجاح!';
+        const response = await fetch("/api/download", {
 
-            const videoUrl = data.data.play;
+            method: "POST",
 
-            const btn = document.createElement('a');
-            btn.href = videoUrl;
-            btn.className = 'download-link-btn';
-            btn.innerHTML = '<i class="fa-solid fa-download"></i> تحميل الفيديو الآن';
-            btn.target = '_blank';
-            downloadLinks.appendChild(btn);
-        } else {
-            // بديل مباشر لو الرابط مش تيك توك
-            resultContainer.classList.remove('hidden');
-            mediaTitle.textContent = 'رابط جاهز للتحميل المباشر:';
-            
-            const btn = document.createElement('a');
-            btn.href = url;
-            btn.className = 'download-link-btn';
-            btn.innerHTML = '<i class="fa-solid fa-download"></i> فتح ملف الفيديو';
-            btn.target = '_blank';
-            downloadLinks.appendChild(btn);
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                url: url
+            })
+
+        });
+
+
+        if (!response.ok) {
+
+            throw new Error("فشل الاتصال بالسيرفر.");
+
         }
 
-    } catch (error) {
-        loading.classList.add('hidden');
-        alert('حدث خطأ، تأكد من صحة الرابط.');
+
+        const data = await response.json();
+
+
+        if (!data.downloads || data.downloads.length === 0) {
+
+            throw new Error("لم يتم العثور على ملف قابل للتحميل.");
+
+        }
+
+
+        mediaTitle.textContent =
+            data.title || "الفيديو جاهز للتحميل";
+
+
+        downloadLinks.innerHTML = "";
+
+
+        data.downloads.forEach(item => {
+
+            const link = document.createElement("a");
+
+            link.className = "download-link";
+
+            link.href = item.url;
+
+            link.download = "";
+
+            link.target = "_blank";
+
+            link.rel = "noopener noreferrer";
+
+
+            link.innerHTML = `
+                <span>
+                    ${item.quality || "جودة"}
+                    -
+                    ${item.format || "Video"}
+                </span>
+
+                <span>
+                    تحميل
+                </span>
+            `;
+
+
+            downloadLinks.appendChild(link);
+
+        });
+
+
+        resultContainer.classList.remove("hidden");
+
     }
+
+    catch (error) {
+
+        showMessage(
+            error.message ||
+            "حدث خطأ أثناء تجهيز الفيديو."
+        );
+
+    }
+
+    finally {
+
+        loading.classList.add("hidden");
+
+        downloadBtn.disabled = false;
+
+    }
+
 });
+
+
+// التحقق من الرابط
+function isValidUrl(value) {
+
+    try {
+
+        const url = new URL(value);
+
+        return (
+            url.protocol === "http:" ||
+            url.protocol === "https:"
+        );
+
+    } catch {
+
+        return false;
+
+    }
+
+}
+
+
+// إظهار رسالة
+function showMessage(text) {
+
+    message.textContent = text;
+
+}
+
+
+// إخفاء النتيجة
+function hideResult() {
+
+    resultContainer.classList.add("hidden");
+
+    downloadLinks.innerHTML = "";
+
+}
