@@ -54,18 +54,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     downloadBtn.addEventListener('click', async () => {
-        const url = videoUrlInput.value.trim();
-        if (!url) {
+        let rawUrl = videoUrlInput.value.trim();
+        if (!rawUrl) {
             alert('الرجاء إدخال رابط فيديو تيك توك أولاً!');
             return;
+        }
+
+        // استخراج رابط تيك توك الأساسي وتطهير أي زيادات أو علامات استفهام خاطئة
+        let cleanUrl = rawUrl;
+        if (rawUrl.includes('tiktok.com')) {
+            const match = rawUrl.match(/(https?:\/\/[^\s]+)/);
+            if (match) {
+                cleanUrl = match[0].split('?')[0]; // إزالة الـ parameters الزائدة التي تسبب المشاكل
+            }
         }
 
         loader.style.display = 'block';
         resultContainer.style.display = 'none';
 
         try {
-            // استخدام API مجاني وسريع جداً لجلب فيديوهات تيك توك
-            const response = await fetch(`https://tikwm.com/api/?url=${encodeURIComponent(url)}`);
+            // استخدام وسيط آمن (CORS Proxy) لضمان جلب البيانات بدون مشاكل حظر المتصفح
+            const apiURL = `https://tikwm.com/api/?url=${encodeURIComponent(cleanUrl)}`;
+            const proxyURL = `https://corsproxy.io/?` + encodeURIComponent(apiURL);
+            
+            const response = await fetch(proxyURL);
             const resData = await response.json();
 
             loader.style.display = 'none';
@@ -96,12 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 addToHistory(videoData.title || 'فيديو تيك توك', videoData.hdplay || videoData.play);
 
             } else {
-                alert('فشل في جلب الفيديو، تأكد من صحة الرابط وأن الحساب عام.');
+                alert('فشل في جلب الفيديو، تأكد من أن الرابط صحيح وأن الحساب عام.');
             }
 
         } catch (error) {
             loader.style.display = 'none';
-            alert('حدث خطأ أثناء جلب الفيديو، يرجى المحاولة مرة أخرى.');
+            alert('حدث خطأ أثناء الاتصال بالخادم. تأكد من اتصالك بالإنترنت وصحة الرابط.');
             console.error(error);
         }
     });
