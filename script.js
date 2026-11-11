@@ -4,84 +4,44 @@ const downloadBtn = document.getElementById("downloadBtn");
 
 const loading = document.getElementById("loading");
 const resultContainer = document.getElementById("resultContainer");
-
 const mediaTitle = document.getElementById("mediaTitle");
 const downloadLinks = document.getElementById("downloadLinks");
-
 const message = document.getElementById("message");
 
 
-// زر اللصق
 pasteBtn.addEventListener("click", async () => {
-
     try {
-
         const text = await navigator.clipboard.readText();
-
         urlInput.value = text;
-
         showMessage("");
-
-    } catch (error) {
-
-        showMessage("المتصفح منع الوصول للحافظة.");
-
+    } catch {
+        showMessage("مش قادر أوصل للحافظة.");
     }
-
 });
 
 
-// زر التحميل
 downloadBtn.addEventListener("click", async () => {
 
     const url = urlInput.value.trim();
 
     if (!url) {
-
-        showMessage("الصق رابط الفيديو أولاً.");
-
+        showMessage("حط رابط Instagram الأول.");
         return;
     }
 
-    if (!isValidUrl(url)) {
-
-        showMessage("الرابط غير صحيح.");
-
+    if (!isInstagramUrl(url)) {
+        showMessage("الموقع ده مخصص لروابط Instagram فقط.");
         return;
     }
-
-    hideResult();
-
-    showMessage("");
 
     loading.classList.remove("hidden");
-
+    resultContainer.classList.add("hidden");
     downloadBtn.disabled = true;
+    showMessage("");
 
     try {
 
-        /*
-         * هنا يتم إرسال الرابط إلى السيرفر الخاص بك.
-         *
-         * مثال:
-         * POST /api/download
-         *
-         * السيرفر المفترض يرجع:
-         *
-         * {
-         *   "title": "اسم الفيديو",
-         *   "downloads": [
-         *      {
-         *          "quality": "1080p",
-         *          "format": "MP4",
-         *          "url": "https://example.com/video.mp4"
-         *      }
-         *   ]
-         * }
-         */
-
         const response = await fetch("/api/download", {
-
             method: "POST",
 
             headers: {
@@ -91,101 +51,68 @@ downloadBtn.addEventListener("click", async () => {
             body: JSON.stringify({
                 url: url
             })
-
         });
-
-
-        if (!response.ok) {
-
-            throw new Error("فشل الاتصال بالسيرفر.");
-
-        }
-
 
         const data = await response.json();
 
-
-        if (!data.downloads || data.downloads.length === 0) {
-
-            throw new Error("لم يتم العثور على ملف قابل للتحميل.");
-
+        if (!response.ok) {
+            throw new Error(data.error || "حصل خطأ.");
         }
 
-
         mediaTitle.textContent =
-            data.title || "الفيديو جاهز للتحميل";
-
+            data.title || "فيديو Instagram";
 
         downloadLinks.innerHTML = "";
-
 
         data.downloads.forEach(item => {
 
             const link = document.createElement("a");
 
             link.className = "download-link";
-
             link.href = item.url;
-
             link.download = "";
-
             link.target = "_blank";
-
             link.rel = "noopener noreferrer";
-
 
             link.innerHTML = `
                 <span>
-                    ${item.quality || "جودة"}
-                    -
-                    ${item.format || "Video"}
+                    ${item.quality || "Video"}
+                    - ${item.format || "MP4"}
                 </span>
 
-                <span>
-                    تحميل
-                </span>
+                <span>تحميل</span>
             `;
 
-
             downloadLinks.appendChild(link);
-
         });
-
 
         resultContainer.classList.remove("hidden");
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         showMessage(
-            error.message ||
-            "حدث خطأ أثناء تجهيز الفيديو."
+            error.message || "حصل خطأ أثناء تجهيز الفيديو."
         );
 
-    }
-
-    finally {
+    } finally {
 
         loading.classList.add("hidden");
-
         downloadBtn.disabled = false;
 
     }
-
 });
 
 
-// التحقق من الرابط
-function isValidUrl(value) {
+function isInstagramUrl(value) {
 
     try {
 
         const url = new URL(value);
+        const host = url.hostname.toLowerCase();
 
         return (
-            url.protocol === "http:" ||
-            url.protocol === "https:"
+            host === "instagram.com" ||
+            host === "www.instagram.com"
         );
 
     } catch {
@@ -193,23 +120,9 @@ function isValidUrl(value) {
         return false;
 
     }
-
 }
 
 
-// إظهار رسالة
 function showMessage(text) {
-
     message.textContent = text;
-
-}
-
-
-// إخفاء النتيجة
-function hideResult() {
-
-    resultContainer.classList.add("hidden");
-
-    downloadLinks.innerHTML = "";
-
 }
