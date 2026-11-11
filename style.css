@@ -1,150 +1,165 @@
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: #121212;
-    color: #ffffff;
+    background-color: #0f172a;
+    color: #f8fafc;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
     padding: 20px;
 }
 
 .container {
     width: 100%;
-    max-width: 650px;
-    background: #1e1e1e;
+    max-width: 600px;
+    background: #1e293b;
     padding: 30px;
     border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     text-align: center;
 }
 
 header h1 {
-    font-size: 1.8rem;
-    margin-bottom: 8px;
-    color: #00f2fe;
+    font-size: 26px;
+    margin-bottom: 10px;
+    color: #38bdf8;
 }
 
 header p {
-    color: #aaa;
-    font-size: 0.95rem;
+    font-size: 14px;
+    color: #94a3b8;
     margin-bottom: 25px;
 }
 
-.search-box {
+.downloader-box {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.search-box input {
+.input-group {
+    display: flex;
+    align-items: center;
+    background: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 10px;
+    padding: 5px 15px;
+    transition: 0.3s;
+}
+
+.input-group:focus-within {
+    border-color: #38bdf8;
+}
+
+.input-group i {
+    color: #64748b;
+    margin-left: 10px;
+}
+
+.input-group input {
     flex: 1;
-    padding: 14px;
-    border-radius: 8px;
-    border: 1px solid #333;
-    background: #2a2a2a;
-    color: #fff;
-    font-size: 0.95rem;
-    outline: none;
-}
-
-.search-box input:focus {
-    border-color: #00f2fe;
-}
-
-.search-box button {
-    padding: 14px 20px;
+    background: transparent;
     border: none;
-    background: linear-gradient(45deg, #00f2fe, #4facfe);
-    color: #000;
+    outline: none;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 0;
+}
+
+#pasteBtn {
+    background: #334155;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+#pasteBtn:hover {
+    background: #475569;
+}
+
+#downloadBtn {
+    background: linear-gradient(135deg, #0ea5e9, #2563eb);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 16px;
     font-weight: bold;
-    border-radius: 8px;
     cursor: pointer;
     transition: 0.3s;
 }
 
-.search-box button:hover {
+#downloadBtn:hover {
     opacity: 0.9;
-    transform: scale(1.02);
+    transform: translateY(-2px);
 }
 
 .hidden {
-    display: none !important;
+    display: none;
 }
 
-.loading {
-    margin: 20px 0;
-    font-size: 1.1rem;
-    color: #ffcc00;
+#loading {
+    margin-top: 20px;
 }
 
-.result-card {
-    background: #282828;
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #334155;
+    border-top: 4px solid #38bdf8;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.media-card {
+    margin-top: 25px;
+    background: #0f172a;
     padding: 20px;
     border-radius: 12px;
-    margin-top: 20px;
+    text-align: right;
+}
+
+.media-card h3 {
+    font-size: 15px;
+    margin-bottom: 15px;
+    color: #e2e8f0;
+    word-break: break-all;
+}
+
+.buttons-group {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 15px;
-}
-
-.result-card img {
-    width: 100%;
-    max-height: 250px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-.info h3 {
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-}
-
-.info p {
-    color: #bbb;
-    font-size: 0.9rem;
-    margin-bottom: 15px;
-}
-
-.actions {
-    display: flex;
     gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
 }
 
-.btn {
-    padding: 10px 18px;
+.download-link-btn {
+    display: block;
+    background: #22c55e;
+    color: white;
     text-decoration: none;
-    border-radius: 6px;
+    padding: 12px;
+    border-radius: 8px;
     font-weight: bold;
-    font-size: 0.9rem;
-    transition: 0.2s;
+    text-align: center;
+    transition: 0.3s;
 }
 
-.btn.primary {
-    background: #25d366;
-    color: #fff;
-}
-
-.btn.secondary {
-    background: #fe2c55;
-    color: #fff;
-}
-
-.btn:hover {
-    opacity: 0.85;
-}
-
-@media (max-width: 500px) {
-    .search-box {
-        flex-direction: column;
-    }
+.download-link-btn:hover {
+    background: #16a34a;
 }
