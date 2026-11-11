@@ -3,37 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مُحمل فيديوهات تيك توك</title>
+    <title>موقع تحميل الفيديوهات الشامل</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>📥 محمل فيديوهات تيك توك</h1>
-            <p>نزل أي فيديو من TikTok بدون علامة مائية وبأعلى جودة مجاناً</p>
+            <h1><i class="fa-solid fa-download"></i> محمل الفيديوهات الشامل</h1>
+            <p>حمل فيديوهاتك المفضلة من تيك توك، إنستجرام، فيسبوك، ويوتيوب بدون علامة مائية!</p>
         </header>
 
-        <main>
-            <div class="search-box">
-                <input type="text" id="videoUrl" placeholder="لصق رابط فيديو تيك توك هنا...">
-                <button id="downloadBtn" onclick="fetchVideo()">تحميل الفيديو</button>
+        <div class="downloader-box">
+            <div class="input-group">
+                <i class="fa-solid fa-link"></i>
+                <input type="text" id="urlInput" placeholder="الصق رابط الفيديو هنا...">
+                <button id="pasteBtn">لصق</button>
             </div>
+            <button id="downloadBtn"><i class="fa-solid fa-cloud-arrow-down"></i> تحميل الفيديو</button>
+        </div>
 
-            <div id="loading" class="loading hidden">جاري فحص وتجهيز الفيديو... ⏳</div>
+        <div id="loading" class="hidden">
+            <div class="spinner"></div>
+            <p>جاري معالجة الرابط وجلب الفيديو...</p>
+        </div>
 
-            <div id="resultCard" class="result-card hidden">
-                <img id="thumbImg" src="" alt="غلاف الفيديو">
-                <div class="info">
-                    <h3 id="videoTitle">عنوان الفيديو</h3>
-                    <p id="authorName">اسم صاحب الفيديو</p>
-
-                    <div class="actions">
-                        <a id="noWatermarkBtn" class="btn primary" href="#" target="_blank" download>تحميل بدون علامة مائية 🎬</a>
-                        <a id="musicBtn" class="btn secondary" href="#" target="_blank" download>تحميل الصوت (MP3) 🎵</a>
-                    </div>
+        <div id="resultContainer" class="hidden">
+            <div class="media-card">
+                <div id="mediaPreview"></div>
+                <h3 id="mediaTitle">عنوان الفيديو</h3>
+                <div id="downloadLinks" class="buttons-group">
+                    <!-- زراير التحميل هتظهر هنا تلقائياً -->
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 
     <script src="script.js"></script>
