@@ -138,7 +138,9 @@ input[type="text"]:focus {
     color: var(--neon-primary);
 }
 
-.paste-btn:hover { background: #30363d; }
+.paste-btn:hover {
+    background: #30363d;
+}
 
 .clear-btn {
     left: 15px;
