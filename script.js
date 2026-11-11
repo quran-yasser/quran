@@ -28,41 +28,34 @@ downloadBtn.addEventListener('click', async () => {
     downloadLinks.innerHTML = '';
 
     try {
-        // استخدام خدمة API مدعومة ومفتوحة للويب
-        const response = await fetch(`https://co.wuk.sh/api/json`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                url: url,
-                vQuality: 'max',
-                filenamePattern: 'classic'
-            })
-        });
-
+        // API سريع ومباشر يدعم المنصات المختلفة
+        const response = await fetch(`https://api.v2.tikwm.com/api/?url=${encodeURIComponent(url)}`);
         const data = await response.json();
+
         loading.classList.add('hidden');
 
-        if (data.status === 'error' || !data.url) {
-            alert('عذراً، الرابط غير مدعوم أو حدث خطأ أثناء المعالجة.');
-            return;
+        if (data.code === 0 && data.data) {
+            resultContainer.classList.remove('hidden');
+            mediaTitle.textContent = data.data.title || 'تم جلب الفيديو بنجاح!';
+
+            // رابط التحميل بدون علامة مائية
+            const videoUrl = data.data.play || data.data.wmplay;
+            
+            const btn = document.createElement('a');
+            btn.href = videoUrl;
+            btn.className = 'download-link-btn';
+            btn.innerHTML = '<i class="fa-solid fa-download"></i> تحميل الفيديو (بدون علامة مائية)';
+            btn.target = '_blank';
+            btn.download = 'video.mp4';
+            downloadLinks.appendChild(btn);
+        } else {
+            // محاولة بديلة لروابط المنصات الأخرى
+            window.open(`https://snapinst.app/`, '_blank');
+            alert('جاري توجيهك لأسرع محرك تحميل لهذا الرابط!');
         }
-
-        resultContainer.classList.remove('hidden');
-        mediaTitle.textContent = 'تم جلب الفيديو بنجاح! اختر طريقة التحميل:';
-
-        // زرار التحميل المباشر
-        const btn = document.createElement('a');
-        btn.href = data.url;
-        btn.className = 'download-link-btn';
-        btn.innerHTML = '<i class="fa-solid fa-download"></i> تحميل الفيديو بجودة عالية';
-        btn.target = '_blank';
-        downloadLinks.appendChild(btn);
 
     } catch (error) {
         loading.classList.add('hidden');
-        alert('حدث خطأ في الاتصال، تأكد من صحة الرابط وحاول مرة أخرى.');
+        alert('تأكد من صحة الرابط وحاول مرة أخرى.');
     }
 });
