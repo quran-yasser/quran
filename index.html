@@ -9,35 +9,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <h1><i class="fa-solid fa-quran"></i> القرآن الكريم</h1>
-            <p>تلاوة خاشعة لجميع سور القرآن الكريم بصوت القارئ الشيخ ياسر الدوسري</p>
-        </div>
-    </header>
+    <div class="main-card">
+        <h1><i class="fa-solid fa-quran"></i> القرآن الكريم</h1>
+        <p class="subtitle">تلاوة خاشعة لجميع سور القرآن الكريم بصوت القارئ الشيخ ياسر الدوسري</p>
 
-    <main class="container">
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="ابحث عن اسم السورة...">
+        <div class="select-container">
+            <label for="surahSelect">اختر السورة:</label>
+            <select id="surahSelect">
+                <option value="">-- اختر السورة من القائمة --</option>
+            </select>
         </div>
 
-        <div class="surahs-grid" id="surahsContainer">
-            <!-- سيتم تعبئة السور برمجياً -->
-        </div>
-    </main>
-
-    <!-- مشغل الصوت الثابت في الأسفل -->
-    <div class="audio-player-bar" id="audioPlayerBar" style="display: none;">
-        <div class="container player-content">
-            <div class="current-surah-info">
-                <span id="playingTitle">جارٍ التحميل...</span>
-                <span class="reciter-name">الشيخ ياسر الدوسري</span>
-            </div>
-            <div class="player-controls">
-                <button id="playPauseBtn"><i class="fa-solid fa-pause"></i></button>
-            </div>
-            <audio id="audioElement" preload="auto"></audio>
+        <div class="player-box" id="playerBox" style="display: none;">
+            <h3 id="selectedTitle">اسم السورة</h3>
+            <audio id="audioElement" controls autoplay style="width: 100%; margin-top: 15px;"></audio>
         </div>
     </div>
 
