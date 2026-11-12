@@ -10,10 +10,17 @@ body {
     color: #f8fafc;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 20px;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .main-card {
@@ -22,7 +29,6 @@ body {
     border-radius: 16px;
     padding: 30px;
     width: 100%;
-    max-width: 500px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     text-align: center;
 }
@@ -40,12 +46,12 @@ body {
     margin-bottom: 25px;
 }
 
-.select-container {
+.select-group {
     text-align: right;
     margin-bottom: 20px;
 }
 
-.select-container label {
+.select-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
@@ -81,6 +87,12 @@ select:focus {
     font-family: 'Amiri', serif;
     color: #f59e0b;
     font-size: 1.3rem;
+    margin-bottom: 15px;
+}
+
+audio {
+    width: 100%;
+    outline: none;
 }
 
 .footer {
