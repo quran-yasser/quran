@@ -3,10 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>القرآن الكريم - بصوت الشيخ ياسر الدوسري</title>
-    <link rel="stylesheet" href="style.css">
+    <title>القرآن الكريم كاملاً | الشيخ ياسر الدوسري</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .main-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .main-card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        .main-card h1 {
+            font-family: 'Amiri', serif;
+            font-size: 2.2rem;
+            color: #f59e0b;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+        .select-group {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .select-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #0f172a;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            color: #f8fafc;
+            font-size: 1.1rem;
+            font-family: 'Amiri', serif;
+            outline: none;
+            cursor: pointer;
+        }
+        select:focus {
+            border-color: #f59e0b;
+        }
+        .player-box {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .player-box h3 {
+            font-family: 'Amiri', serif;
+            color: #f59e0b;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        audio {
+            width: 100%;
+            outline: none;
+        }
+        .footer {
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div class="main-container">
@@ -32,6 +123,52 @@
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        const surahsData = [
+            "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس",
+            "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه",
+            "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم",
+            "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر",
+            "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق",
+            "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة",
+            "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج",
+            "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس",
+            "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد",
+            "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات",
+            "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر",
+            "المسد", "الإخلاص", "الفلق", "الناس"
+        ];
+
+        const surahSelect = document.getElementById('surahSelect');
+        const playerBox = document.getElementById('playerBox');
+        const audioElement = document.getElementById('audioElement');
+        const selectedTitle = document.getElementById('selectedTitle');
+
+        surahsData.forEach((name, index) => {
+            const surahNum = index + 1;
+            const option = document.createElement('option');
+            option.value = surahNum;
+            option.textContent = `${surahNum}. سورة ${name}`;
+            surahSelect.appendChild(option);
+        });
+
+        surahSelect.addEventListener('change', (e) => {
+            const surahNum = e.target.value;
+            if (!surahNum) {
+                playerBox.style.display = 'none';
+                audioElement.pause();
+                return;
+            }
+
+            const paddedId = String(surahNum).padStart(3, '0');
+            const audioUrl = `https://server11.mp3quran.net/yasser/${paddedId}.mp3`;
+            const surahName = surahsData[surahNum - 1];
+
+            selectedTitle.textContent = `سورة ${surahName} (الشيخ ياسر الدوسري)`;
+            audioElement.src = audioUrl;
+            audioElement.play();
+            playerBox.style.display = 'block';
+        });
+    </script>
 </body>
 </html>
