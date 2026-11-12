@@ -3,98 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التنزيل الشاملة - محمل تيك توك</title>
-    <!-- FontAwesome للأيقونات -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts الخط العربي -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <title>القرآن الكريم - بصوت الشيخ ياسر الدوسري</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header class="header">
+        <div class="container">
+            <h1><i class="fa-solid fa-quran"></i> القرآن الكريم</h1>
+            <p>تلاوة خاشعة لجميع سور القرآن الكريم بصوت القارئ الشيخ ياسر الدوسري</p>
+        </div>
+    </header>
 
-    <div class="glow-bg"></div>
+    <main class="container">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="ابحث عن اسم السورة...">
+        </div>
 
-    <div class="container">
-        <!-- الهيدر -->
-        <header>
-            <div class="logo">
-                <i class="fa-solid fa-cloud-arrow-down neon-icon"></i>
-                <h1>منصة التنزيل <span>الشاملة</span></h1>
+        <div class="surahs-grid" id="surahsContainer">
+            <!-- سيتم تعبئة السور برمجياً -->
+        </div>
+    </main>
+
+    <!-- مشغل الصوت الثابت في الأسفل -->
+    <div class="audio-player-bar" id="audioPlayerBar" style="display: none;">
+        <div class="container player-content">
+            <div class="current-surah-info">
+                <span id="playingTitle">جارٍ التحميل...</span>
+                <span class="reciter-name">الشيخ ياسر الدوسري</span>
             </div>
-            <p class="subtitle">قم بتنزيل فيديوهات تيك توك بدون علامة مائية وبجودة عالية مجاناً</p>
-        </header>
-
-        <!-- صندوق الإدخال -->
-        <main>
-            <div class="input-card">
-                <div class="input-group">
-                    <i class="fa-solid fa-link input-icon"></i>
-                    <input type="text" id="videoUrl" placeholder="ألصق رابط فيديو تيك توك هنا...">
-                    <button id="pasteBtn" class="action-btn paste-btn" title="لصق من الحافظة">
-                        <i class="fa-solid fa-paste"></i> لصق
-                    </button>
-                    <button id="clearBtn" class="action-btn clear-btn" title="مسح الحقل" style="display: none;">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <button id="downloadBtn" class="submit-btn">
-                    <i class="fa-solid fa-download"></i> استخراج وتحميل
-                </button>
+            <div class="player-controls">
+                <button id="playPauseBtn"><i class="fa-solid fa-pause"></i></button>
             </div>
-
-            <!-- مؤشر التحميل -->
-            <div id="loader" class="loader-container" style="display: none;">
-                <div class="spinner"></div>
-                <p>جاري جلب بيانات الفيديو، يرجى الانتظار...</p>
-            </div>
-
-            <!-- قسم عرض النتيجة -->
-            <div id="resultContainer" class="result-container" style="display: none;">
-                <div class="result-card">
-                    <div class="media-preview">
-                        <img id="videoCover" src="" alt="غلاف الفيديو">
-                        <div class="play-badge"><i class="fa-solid fa-play"></i></div>
-                    </div>
-                    <div class="video-details">
-                        <h3 id="authorName">اسم المستخدم</h3>
-                        <p id="videoDesc" class="video-desc">وصف الفيديو يظهر هنا...</p>
-                        <div class="stats-row">
-                            <span><i class="fa-solid fa-heart text-danger"></i> <span id="statLikes">0</span></span>
-                            <span><i class="fa-solid fa-comment text-info"></i> <span id="statComments">0</span></span>
-                            <span><i class="fa-solid fa-share text-success"></i> <span id="statShares">0</span></span>
-                        </div>
-
-                        <!-- أزرار التحميل المباشر -->
-                        <div class="download-options">
-                            <a id="downloadHD" href="#" target="_blank" class="dl-btn hd-btn">
-                                <i class="fa-solid fa-video"></i> تحميل بدون علامة مائية (HD)
-                            </a>
-                            <a id="downloadWatermark" href="#" target="_blank" class="dl-btn water-btn">
-                                <i class="fa-solid fa-video-slash"></i> تحميل بالعلامة المائية
-                            </a>
-                            <a id="downloadAudio" href="#" target="_blank" class="dl-btn audio-btn">
-                                <i class="fa-solid fa-music"></i> تحميل الصوت (MP3)
-                            </a>
-                            <a id="downloadCover" href="#" target="_blank" class="dl-btn cover-btn">
-                                <i class="fa-solid fa-image"></i> تحميل غلاف الفيديو
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- سجل التحميلات السابقة -->
-            <div class="history-section" id="historySection" style="display: none;">
-                <h3><i class="fa-solid fa-history"></i> عمليات التنزيل الأخيرة</h3>
-                <div id="historyList" class="history-list"></div>
-            </div>
-        </main>
-
-        <!-- الفوتر -->
-        <footer>
-            <p>تم التطوير بواسطة <span>منصة التنزيل الشاملة</span> &copy; 2026</p>
-        </footer>
+            <audio id="audioElement" preload="auto"></audio>
+        </div>
     </div>
+
+    <footer class="footer">
+        <p>نسأل الله أن يجعله صدقة جارية لنا ولكل من ساهم في نشره.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
